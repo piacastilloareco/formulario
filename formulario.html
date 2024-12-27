@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRWR2T+Uyo/4CBwVHwa9p00aC3ezEobzGl+j62OlG" crossorigin="anonymous">
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Formulario de Servicios y Cuestionario</title>
+
+        <!-- Estilos personalizados -->
+        <style>
+            body {
+                font-family: 'Roboto', sans-serif;
+            }
+            h1 {
+                font-weight: 700;
+            }
+            label {
+                font-weight: 500;
+            }
+            input, select {
+                font-size: 16px;
+            }
+            .form-group {
+                  margin-bottom: 2rem; /* Ajustar separación entre campos */
+            }
+        </style>
+    </head>
+    <body class="bg-light">
+        <div class="container mt-5">
+            <!-- Selector de idioma -->
+            <div class="text-end mb-4">
+                <label for="language-selector" class="me-2">Idioma:</label>
+                <select id="language-selector" class="form-select d-inline w-auto" onchange="changeLanguage()">
+                    <option value="es" selected>Español</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Servicios y Cuestionario</title>
+    <script>
+            // Función para verificar las restricciones basadas en el nivel de cuestionario
+        function verificarRestricciones() {
+        const nivel = document.getElementById("nivel_cuestionario").value.toLowerCase();
+        const idiomaSeleccionado = document.getElementById("language-selector").value;
+
+        // Elementos relacionados
+        const completoCheckbox = document.getElementById("modelo_completo");
+        const reducidoCheckbox = document.getElementById("modelo_reducido_enriquecido");
+        const operacionalConDoc = document.getElementById("operacional_con_documento");
+        const esgCompletoCheckbox = document.getElementById("esg_completo");
+        const esgIntermedioCheckbox = document.getElementById("esg_intermedio");
+        const esgBasicoCheckbox = document.getElementById("esg_basico");
+        const ciberCompletoCheckbox = document.getElementById("ciber_completo");
+        const ciberBasicoCheckbox = document.getElementById("ciber_basico");
+        const obligacionesTribCheckbox = document.getElementById("obligaciones_documento");
+        const datosBancariosDocCheckbox = document.getElementById("bancarios_documento");
+        const polizaSeguroDocCheckbox = document.getElementById("poliza_documento");
+        }
+    </script>
+    </head>
+
+
+
+<script>
+function changeLanguage() {
+    const selectedLanguage = document.getElementById("language-selector").value;
+
+    // Cambiar textos dinámicamente
+    document.querySelectorAll("[data-lang-es]").forEach(element => {
+        const text = element.getAttribute(`data-lang-${selectedLanguage}`);
+        if (text) {
+            element.textContent = text; // Cambiar el contenido de texto
+        }
+    });
+
+    // Actualizar textos en el resumen si ya está visible
+    if (document.getElementById("resumen").style.display === "block") {
+        mostrarResumen(); // Volver a mostrar el resumen con el idioma actualizado
+    }
+}
+
+</script>
+
+</body>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h1 class="text-center mb-4" 
+            data-lang-es="Formulario para la generación del cuestionario" 
+            data-lang-en="Form for Questionnaire Generation">
+            Formulario para la generación del cuestionario
+        </h1>
+        <h3 class="text-center mb-5" 
+            data-lang-es="Seleccione los riesgos contratados en la cadena de suministro" 
+            data-lang-en="Select the contracted risks within the supply chain">
+            Seleccione los riesgos contratados en la cadena de suministro
+        </h3>
+    </div>
+</body>
+
+
+        <!-- Formulario -->
+
+
+        <form id="formulario" action="/submit" method="POST" class="p-4 border rounded bg-white shadow-sm">
+            <!-- Nombre del Cliente -->
+            <div class="form-group">
+                <label for="nombre_cliente" class="form-label" data-lang-es="Nombre del Cliente:" data-lang-en="Client Name:">Nombre del Cliente:</label>
+                <input type="text" id="nombre_cliente" name="nombre_cliente" class="form-control" placeholder="Ingrese el nombre del cliente" data-lang-placeholder-es="Ingrese el nombre del cliente" data-lang-placeholder-en="Enter client name" required>
+            </div>
+        
+            <!-- Liderado por -->
+            <div class="form-group">
+                <label for="liderado_por" class="form-label" data-lang-es="Liderado por:" data-lang-en="Led by:">Liderado por:</label>
+                <input type="text" id="liderado_por" name="liderado_por" class="form-control" placeholder="Ingrese el nombre del líder" data-lang-placeholder-es="Ingrese el nombre del líder" data-lang-placeholder-en="Enter leader's name" required>
+            </div>
+        
+            <!-- Nivel de Cuestionario -->
+            <div class="form-group">
+                <label for="nivel_cuestionario" class="form-label" data-lang-es="Nivel de Cuestionario:" data-lang-en="Questionnaire Level:">Nivel de Cuestionario:</label>
+                <select id="nivel_cuestionario" name="nivel_cuestionario" class="form-select" onchange="verificarRestricciones()">
+                    <option value="360">360</option>
+                    <option value="180">180</option>
+                    <option value="basic">Basic</option>
+                    <option value="elementary">Elementary</option>
+                    <option value="digital">Digital</option>
+                </select>
+            </div>
+        
+
+
+    </body>
+
+        <!-- Score Financiero -->
+        <fieldset>
+            <legend data-lang-es="Score Financiero" data-lang-en="Financial Score">Score Financiero</legend>
+            
+            <label>
+                <input type="checkbox" id="modelo_completo" name="servicios" value="Modelo Completo Enriquecido (Con Documento)" 
+                    onclick="deseleccionarOtros('modelo_completo')" 
+                    data-lang-es="Modelo Completo Enriquecido (Con Documento)" 
+                    data-lang-en="Complete Enriched Model (With Document)">
+                <span data-lang-es="Modelo Completo Enriquecido (Con Documento)" 
+                      data-lang-en="Complete Enriched Model (With Document)">
+                      Modelo Completo Enriquecido (Con Documento)</span>
+            </label><br>
+            
+            <label>
+                <input type="checkbox" id="modelo_reducido_enriquecido" name="servicios" value="Modelo Reducido Enriquecido (Con documento)" 
+                    onclick="deseleccionarOtros('modelo_reducido_enriquecido')" 
+                    data-lang-es="Modelo Reducido Enriquecido (Con Documento)" 
+                    data-lang-en="Reduced Enriched Model (With Document)">
+                <span data-lang-es="Modelo Reducido Enriquecido (Con Documento)" 
+                      data-lang-en="Reduced Enriched Model (With Document)">
+                      Modelo Reducido Enriquecido (Con Documento)</span>
+            </label><br>
+            
+            <label>
+                <input type="checkbox" id="modelo_reducido_sin_doc" name="servicios" value="Modelo Reducido No Enriquecido (Sin Documento)" 
+                    onclick="deseleccionarOtros('modelo_reducido_sin_doc')" 
+                    data-lang-es="Modelo Reducido No Enriquecido (Sin Documento)" 
+                    data-lang-en="Reduced Non-Enriched Model (Without Document)">
+                <span data-lang-es="Modelo Reducido No Enriquecido (Sin Documento)" 
+                      data-lang-en="Reduced Non-Enriched Model (Without Document)">
+                      Modelo Reducido No Enriquecido (Sin Documento)</span>
+            </label><br>
+            
+            <label>
+                <input type="checkbox" id="modelo_minimo_no_enriquecido" name="servicios" value="Modelo Mínimo No Enriquecido (Sin documento)" 
+                    onclick="deseleccionarOtros('modelo_minimo_no_enriquecido')" 
+                    data-lang-es="Modelo Mínimo No Enriquecido (Sin Documento)" 
+                    data-lang-en="Minimum Non-Enriched Model (Without Document)">
+                <span data-lang-es="Modelo Mínimo No Enriquecido (Sin Documento)" 
+                      data-lang-en="Minimum Non-Enriched Model (Without Document)">
+                      Modelo Mínimo No Enriquecido (Sin Documento)</span>
+            </label><br>
+        </fieldset>
+        
+
+        <script>
+            function verificarRestriccionesFinanciero() {
+                const nivel = document.getElementById("nivel_cuestionario").value.toLowerCase();
+                const idiomaSeleccionado = document.getElementById("language-selector").value;
+
+                // Referencias a los elementos
+                const modeloCompleto = document.getElementById("modelo_completo");
+                const modeloReducidoEnriquecido = document.getElementById("modelo_reducido_enriquecido");
+
+                // Restricciones para Basic y Elementary
+                if (nivel === "basic" || nivel === "elementary") {
+                    modeloCompleto.checked = false;
+                    modeloReducidoEnriquecido.checked = false;
+
+                    modeloCompleto.disabled = true;
+                    modeloReducidoEnriquecido.disabled = true;
+
+                    // Mensaje dinámico según idioma seleccionado
+                    const alertMessage =
+                        idiomaSeleccionado === "es"
+                            ? "Los modelos completos y reducidos enriquecidos no están disponibles para los niveles Basic o Elementary."
+                            : "Complete and Reduced Enriched Models are not available for Basic or Elementary levels.";
+                    alert(alertMessage);
+                } else {
+                    modeloCompleto.disabled = false;
+                    modeloReducidoEnriquecido.disabled = false;
+                }
+            }
+
+            function deseleccionarOtros(seleccionadoId) {
+                // Lista de todos los checkboxes en el grupo Score Financiero
+                const ids = [
+                    "modelo_completo",
+                    "modelo_reducido_enriquecido",
+                    "modelo_reducido_sin_doc",
+                    "modelo_minimo_no_enriquecido"
+                ];
+
+                // Recorre la lista de IDs y desmarca todos excepto el seleccionado
+                ids.forEach(id => {
+                    if (id !== seleccionadoId) {
+                        document.getElementById(id).checked = false; // Desmarcar
+                    }
+                });
+            }
+
+            // Escuchar cambios en el selector de nivel
+            document.getElementById("nivel_cuestionario").addEventListener("change", verificarRestriccionesFinanciero);
+        </script>
+
+
+        <!-- Información Financiera adicional -->
+        <fieldset>
+            <legend data-lang-es="Información Financiera adicional" data-lang-en="Additional Financial Information">Información Financiera adicional</legend>
+            
+            <label>
+                <input type="checkbox" id="bancarios_documento" name="servicios" value="Datos bancarios con documento" 
+                    onclick="controlarSeleccion('bancarios')" 
+                    data-lang-es="Datos bancarios con documento" 
+                    data-lang-en="Bank data with document">
+                <span data-lang-es="Datos bancarios con documento" 
+                      data-lang-en="Bank data with document">
+                      Datos bancarios con documento</span>
+            </label><br>
+            
+            <label>
+                <input type="checkbox" id="bancarios_sin_documento" name="servicios" value="Datos bancarios sin documento" 
+                    onclick="controlarSeleccion('bancarios')" 
+                    data-lang-es="Datos bancarios sin documento" 
+                    data-lang-en="Bank data without document">
+                <span data-lang-es="Datos bancarios sin documento" 
+                      data-lang-en="Bank data without document">
+                      Datos bancarios sin documento</span>
+            </label><br>
+            
+            <label>
+                <input type="checkbox" id="poliza_documento" name="servicios" value="Poliza de seguro con documento" 
+                    onclick="controlarSeleccion('poliza')" 
+                    data-lang-es="Póliza de seguro con documento" 
+                    data-lang-en="Insurance policy with document">
+                <span data-lang-es="Póliza de seguro con documento" 
+                      data-lang-en="Insurance policy with document">
+                      Póliza de seguro con documento</span>
+            </label><br>
+            
+            <label>
+                <input type="checkbox" id="poliza_sin_documento" name="servicios" value="Poliza de seguro sin documento" 
+                    onclick="controlarSeleccion('poliza')" 
+                    data-lang-es="Póliza de seguro sin documento" 
+                    data-lang-en="Insurance policy without document">
+                <span data-lang-es="Póliza de seguro sin documento" 
+                      data-lang-en="Insurance policy without document">
+                      Póliza de seguro sin documento</span>
+            </label><br>
+        </fieldset><br>
+        
+
+        <script>
+            // Función para controlar exclusión mutua y restricciones según nivel
+            function controlarSeleccion(grupo) {
+                let conDocumentoId, sinDocumentoId;
+
+                // Identificar el grupo seleccionado
+                if (grupo === "bancarios") {
+                    conDocumentoId = "bancarios_documento";
+                    sinDocumentoId = "bancarios_sin_documento";
+                } else if (grupo === "poliza") {
+                    conDocumentoId = "poliza_documento";
+                    sinDocumentoId = "poliza_sin_documento";
+                }
+
+                // Obtener referencias a los checkboxes
+                const conDocumentoCheckbox = document.getElementById(conDocumentoId);
+                const sinDocumentoCheckbox = document.getElementById(sinDocumentoId);
+
+                // Lógica de exclusión mutua
+                if (conDocumentoCheckbox.checked) {
+                    sinDocumentoCheckbox.checked = false; // Desmarcar "sin documento" si "con documento" está seleccionado
+                }
+                if (sinDocumentoCheckbox.checked) {
+                    conDocumentoCheckbox.checked = false; // Desmarcar "con documento" si "sin documento" está seleccionado
+                }
+            }
+
+            // Función para aplicar restricciones según el nivel
+            function verificarRestriccionesFinancieras() {
+                const nivel = document.getElementById("nivel_cuestionario").value.toLowerCase();
+
+                const bancariosConDoc = document.getElementById("bancarios_documento");
+                const polizaConDoc = document.getElementById("poliza_documento");
+
+                // Deshabilitar opciones con documento para niveles incompatibles
+                if (nivel === "basic" || nivel === "elementary" || nivel === "digital") {
+                    bancariosConDoc.checked = false;
+                    polizaConDoc.checked = false;
+
+                    bancariosConDoc.disabled = true;
+                    polizaConDoc.disabled = true;
+
+                    // Mensaje dinámico según idioma seleccionado
+                    const idiomaSeleccionado = document.getElementById("language-selector").value;
+                    if (idiomaSeleccionado === "es") {
+                        alert("Los servicios con documento no están permitidos para los niveles Basic, Elementary o Digital.");
+                    } else if (idiomaSeleccionado === "en") {
+                        alert("Services with documents are not allowed for Basic, Elementary, or Digital levels.");
+                    }
+                } else {
+                    bancariosConDoc.disabled = false;
+                    polizaConDoc.disabled = false;
+                }
+            }
+
+            // Escuchar cambios en el selector de nivel
+            document.getElementById("nivel_cuestionario").addEventListener("change", verificarRestriccionesFinancieras);
+        </script>
+
+        <!-- Score Operacional -->
+            <fieldset>
+                <legend data-lang-es="Score Operacional" data-lang-en="Operational Score">Score Operacional</legend>
+            
+                <label>
+                    <input type="checkbox" id="operacional_con_documento" name="servicios" value="Operacional con documento" 
+                        data-lang-es="Operacional con documento" 
+                        data-lang-en="Operational with document" 
+                        onchange="verificarRestriccionesOperacional()">
+                    <span data-lang-es="Operacional con documento" 
+                        data-lang-en="Operational with document">
+                        Operacional con documento</span>
+                </label><br>
+            
+                <label>
+                    <input type="checkbox" id="operacional_sin_documento" name="servicios" value="Operacional sin documento" 
+                        data-lang-es="Operacional sin documento" 
+                        data-lang-en="Operational without document" 
+                        onchange="verificarRestriccionesOperacional()">
+                    <span data-lang-es="Operacional sin documento" 
+                        data-lang-en="Operational without document">
+                        Operacional sin documento</span>
+                </label><br>
+            </fieldset><br>
+        
+        <!-- Sección Operacional adicional -->
+            <fieldset>
+                <legend data-lang-es="Sección Operacional adicional" data-lang-en="Additional Operational Section">
+                    Sección Operacional adicional
+                </legend>
+
+                <label>
+                    <input type="checkbox" id="accidentabilidad" name="servicios" value="Accidentabilidad" disabled 
+                        data-lang-es="Accidentabilidad" 
+                        data-lang-en="Accidentality">
+                    <span data-lang-es="Accidentabilidad" data-lang-en="Accidentality">Accidentabilidad</span>
+                </label><br>
+            </fieldset><br>
+
+
+        <script>
+            function verificarRestriccionesOperacional() {
+                const nivel = document.getElementById("nivel_cuestionario").value.toLowerCase();
+                const idiomaSeleccionado = document.getElementById("language-selector").value;
+
+                const operacionalConDoc = document.getElementById("operacional_con_documento");
+                const operacionalSinDoc = document.getElementById("operacional_sin_documento");
+                const accidentabilidad = document.getElementById("accidentabilidad");
+
+                // Restricciones de nivel para "Operacional con documento"
+                if (["basic", "elementary", "digital"].includes(nivel)) {
+                    operacionalConDoc.checked = false;
+                    operacionalConDoc.disabled = true;
+
+                    accidentabilidad.checked = false;
+                    accidentabilidad.disabled = true;
+
+                    // Mostrar alerta según idioma
+                    const alertMessage =
+                        idiomaSeleccionado === "es"
+                            ? "Operacional con documento no está permitido para los niveles Basic, Elementary o Digital."
+                            : "Operational with document is not allowed for Basic, Elementary, or Digital levels.";
+                    alert(alertMessage);
+                } else {
+                    operacionalConDoc.disabled = false;
+
+                    // Habilitar Accidentabilidad si "Operacional con documento" está seleccionado
+                    if (operacionalConDoc.checked) {
+                        accidentabilidad.disabled = false;
+                    } else {
+                        accidentabilidad.checked = false; // Desmarcar si se deshabilita
+                        accidentabilidad.disabled = true;
+                    }
+                }
+
+                // Exclusión mutua entre "Operacional con documento" y "Operacional sin documento"
+                if (operacionalConDoc.checked) {
+                    operacionalSinDoc.checked = false; // Desmarcar "sin documento"
+                    operacionalSinDoc.disabled = true;
+                } else if (operacionalSinDoc.checked) {
+                    operacionalConDoc.checked = false; // Desmarcar "con documento"
+                } else {
+                    operacionalSinDoc.disabled = false; // Habilitar "sin documento" si no hay conflicto
+                }
+            }
+
+            // Escuchar cambios en el selector de nivel y checkboxes
+            document.getElementById("nivel_cuestionario").addEventListener("change", verificarRestriccionesOperacional);
+            document.getElementById("operacional_con_documento").addEventListener("change", verificarRestriccionesOperacional);
+            document.getElementById("operacional_sin_documento").addEventListener("change", verificarRestriccionesOperacional);
+        </script>
+
+        <!-- Sección ESG -->
+        <!-- Sección ESG -->
+        <fieldset>
+            <legend data-lang-es="Riesgo ESG" data-lang-en="ESG Risk">Riesgo ESG</legend>
+
+            <!-- Checkbox ESG Completo -->
+            <label>
+                <input type="checkbox" id="esg_completo" name="servicios" value="ESG Completo" 
+                    data-lang-es="ESG Completo" 
+                    data-lang-en="ESG Complete" 
+                    onchange="verificarSeleccionESG()">
+                <span data-lang-es="ESG Completo" data-lang-en="ESG Complete">ESG Completo</span>
+            </label><br>
+
+            <!-- Checkbox ESG Intermedio -->
+            <label>
+                <input type="checkbox" id="esg_intermedio" name="servicios" value="ESG Intermedio" 
+                    data-lang-es="ESG Intermedio" 
+                    data-lang-en="ESG Intermediate" 
+                    onchange="verificarSeleccionESG()">
+                <span data-lang-es="ESG Intermedio" data-lang-en="ESG Intermediate">ESG Intermedio</span>
+            </label><br>
+
+            <!-- Checkbox ESG Básico -->
+            <label>
+                <input type="checkbox" id="esg_basico" name="servicios" value="ESG Basico" 
+                    data-lang-es="ESG Basico" 
+                    data-lang-en="ESG Basic" 
+                    onchange="verificarSeleccionESG()">
+                <span data-lang-es="ESG Basico" data-lang-en="ESG Basic">ESG Basico</span>
+            </label><br>
+
+            <!-- Checkboxes adicionales para ESG Transversal y Predictivo -->
+            <label>
+                <input type="checkbox" id="esg_transversal" value="ESG Transversal" 
+                    data-lang-es="ESG Transversal" 
+                    data-lang-en="ESG Transversal" checked disabled>
+                <span data-lang-es="ESG Transversal" data-lang-en="ESG Transversal">ESG Transversal</span>
+            </label>
+            <input type="hidden" name="servicios" value="ESG Transversal" id="hidden_esg_transversal"><br>
+
+            <label>
+                <input type="checkbox" id="esg_predictivo" value="ESG Predictivo" 
+                    data-lang-es="ESG Predictivo" 
+                    data-lang-en="ESG Predictive" checked disabled>
+                <span data-lang-es="ESG Predictivo" data-lang-en="ESG Predictive">ESG Predictivo</span>
+            </label>
+            <input type="hidden" name="servicios" value="ESG Predictivo" id="hidden_esg_predictivo"><br>
+        </fieldset><br>
+
+        <script>
+
+        function verificarSeleccionESG() {
+            // Verificar si ESG Completo, Intermedio o Básico están seleccionados
+            const esgCompleto = document.getElementById("esg_completo").checked;
+            const esgIntermedio = document.getElementById("esg_intermedio").checked;
+            const esgBasico = document.getElementById("esg_basico").checked;
+
+            // Referencias a los checkboxes adicionales y ocultos
+            const esgTransversal = document.getElementById("esg_transversal");
+            const hiddenTransversal = document.getElementById("hidden_esg_transversal");
+            const esgPredictivo = document.getElementById("esg_predictivo");
+            const hiddenPredictivo = document.getElementById("hidden_esg_predictivo");
+
+            // Activar ESG Transversal y Predictivo si alguno está seleccionado
+            if (esgCompleto || esgIntermedio || esgBasico) {
+                esgTransversal.checked = true;
+                esgPredictivo.checked = true;
+                hiddenTransversal.disabled = false;
+                hiddenPredictivo.disabled = false;
+            } else {
+                esgTransversal.checked = false;
+                esgPredictivo.checked = false;
+                hiddenTransversal.disabled = true;
+                hiddenPredictivo.disabled = true;
+            }
+        }
+
+        function verificarRestriccionesESG() {
+            const nivel = document.getElementById("nivel_cuestionario").value.toLowerCase();
+
+            // Referencias a los elementos ESG
+            const esgCompleto = document.getElementById("esg_completo");
+            const esgIntermedio = document.getElementById("esg_intermedio");
+            const esgBasico = document.getElementById("esg_basico");
+
+            // Restablecer: deshabilitar y desmarcar todos los checkboxes
+            [esgCompleto, esgIntermedio, esgBasico].forEach(checkbox => {
+                checkbox.checked = false;
+                checkbox.disabled = true;
+            });
+
+            // Aplicar criterios según el nivel
+            if (nivel === "360") {
+                esgCompleto.disabled = false; // Habilitar ESG Completo
+            } else if (nivel === "180") {
+                esgIntermedio.disabled = false; // Habilitar ESG Intermedio
+            } else if (nivel === "basic") {
+                esgBasico.disabled = false; // Habilitar ESG Básico
+            }
+
+            verificarSeleccionESG(); // Garantizar la lógica de Transversal y Predictivo
+        }
+
+        // Escuchar cambios en el selector de nivel
+        document.getElementById("nivel_cuestionario").addEventListener("change", verificarRestriccionesESG);
+
+        
+        </script>
+
+
+
+        <!-- Riesgo Ciberseguridad -->
+        <fieldset>
+            <legend data-lang-es="Riesgo Ciberseguridad" data-lang-en="Cybersecurity Risk">Riesgo Ciberseguridad</legend>
+        
+            <label>
+                <input type="checkbox" id="ciber_completo" name="servicios" value="Ciberseguridad Completo" 
+                    onclick="exclusivoCiberseguridad('ciber_completo')" 
+                    data-lang-es="Ciberseguridad Completo" 
+                    data-lang-en="Cybersecurity Complete">
+                <span data-lang-es="Ciberseguridad Completo" data-lang-en="Cybersecurity Complete">Ciberseguridad Completo</span>
+            </label><br>
+        
+            <label>
+                <input type="checkbox" id="ciber_basico" name="servicios" value="Ciberseguridad Basico" 
+                    onclick="exclusivoCiberseguridad('ciber_basico')" 
+                    data-lang-es="Ciberseguridad Basico" 
+                    data-lang-en="Cybersecurity Basic">
+                <span data-lang-es="Ciberseguridad Basico" data-lang-en="Cybersecurity Basic">Ciberseguridad Basico</span>
+            </label><br>
+        </fieldset><br>
+        
+
+    <script>
+        function verificarRestriccionesCiberseguridad() {
+            const nivel = document.getElementById("nivel_cuestionario").value.toLowerCase();
+            const idiomaSeleccionado = document.getElementById("language-selector").value;
+
+            const ciberCompleto = document.getElementById("ciber_completo");
+            const ciberBasico = document.getElementById("ciber_basico");
+
+            // Restricciones de nivel
+            if (["basic", "elementary", "digital"].includes(nivel)) {
+                ciberCompleto.checked = false;
+                ciberCompleto.disabled = true;
+
+                // Mostrar mensaje dinámico según idioma
+                const alertMessage =
+                    idiomaSeleccionado === "es"
+                        ? "Ciberseguridad Completo no está permitido para los niveles Basic, Elementary o Digital."
+                        : "Cybersecurity Complete is not allowed for Basic, Elementary, or Digital levels.";
+                alert(alertMessage);
+            } else {
+                ciberCompleto.disabled = false;
+            }
+        }
+
+        function exclusivoCiberseguridad(seleccionadoId) {
+            // Lista de todos los IDs del grupo Riesgo Ciberseguridad
+            const ids = ["ciber_completo", "ciber_basico"];
+
+            // Desmarcar todos los checkboxes excepto el seleccionado
+            ids.forEach(id => {
+                if (id !== seleccionadoId) {
+                    document.getElementById(id).checked = false; // Desmarcar
+                }
+            });
+        }
+
+        // Escuchar cambios en el selector de nivel
+        document.getElementById("nivel_cuestionario").addEventListener("change", verificarRestriccionesCiberseguridad);
+    </script>
+
+        <!-- Riesgo Compliance -->
+        <fieldset>
+            <legend data-lang-es="Riesgo Compliance" data-lang-en="Compliance Risk">Riesgo Compliance</legend>
+        
+            <label>
+                <input type="checkbox" id="compliance_onlycompany" name="servicios" value="Onlycompany" 
+                    onclick="exclusivoCompliance('compliance_onlycompany')" 
+                    data-lang-es="Onlycompany" 
+                    data-lang-en="Onlycompany">
+                <span data-lang-es="Onlycompany" data-lang-en="Onlycompany">Onlycompany</span>
+            </label><br>
+        
+            <label>
+                <input type="checkbox" id="compliance_onlycompany_politicas" name="servicios" value="Onlycompany + Politicas" 
+                    onclick="exclusivoCompliance('compliance_onlycompany_politicas')" 
+                    data-lang-es="Onlycompany + Políticas" 
+                    data-lang-en="Onlycompany + Policies">
+                <span data-lang-es="Onlycompany + Políticas" data-lang-en="Onlycompany + Policies">Onlycompany + Políticas</span>
+            </label><br>
+        
+            <label>
+                <input type="checkbox" id="compliance_stakeholders" name="servicios" value="Stakeholders" 
+                    onclick="exclusivoCompliance('compliance_stakeholders')" 
+                    data-lang-es="Stakeholders" 
+                    data-lang-en="Stakeholders">
+                <span data-lang-es="Stakeholders" data-lang-en="Stakeholders">Stakeholders</span>
+            </label><br>
+        
+            <label>
+                <input type="checkbox" id="compliance_stakeholders_politicas" name="servicios" value="Stakeholders + Politicas" 
+                    onclick="exclusivoCompliance('compliance_stakeholders_politicas')" 
+                    data-lang-es="Stakeholders + Políticas" 
+                    data-lang-en="Stakeholders + Policies">
+                <span data-lang-es="Stakeholders + Políticas" data-lang-en="Stakeholders + Policies">Stakeholders + Políticas</span>
+            </label><br>
+        
+            <label>
+                <input type="checkbox" id="compliance_stakeholders_peps_y_sips" name="servicios" value="Stakeholders + Peps y Sips" 
+                    onclick="exclusivoCompliance('compliance_stakeholders_peps_y_sips')" 
+                    data-lang-es="Stakeholders + Peps y Sips" 
+                    data-lang-en="Stakeholders + Peps and Sips">
+                <span data-lang-es="Stakeholders + Peps y Sips" data-lang-en="Stakeholders + Peps and Sips">Stakeholders + Peps y Sips</span>
+            </label><br>
+        
+            <label>
+                <input type="checkbox" id="compliance_stakeholders_politicas_peps_sips" name="servicios" value="Stakeholders + Politicas + Peps y Sips" 
+                    onclick="exclusivoCompliance('compliance_stakeholders_politicas_peps_sips')" 
+                    data-lang-es="Stakeholders + Políticas + Peps y Sips" 
+                    data-lang-en="Stakeholders + Policies + Peps and Sips">
+                <span data-lang-es="Stakeholders + Políticas + Peps y Sips" data-lang-en="Stakeholders + Policies + Peps and Sips">Stakeholders + Políticas + Peps y Sips</span>
+            </label><br>
+        </fieldset><br>
+        
+
+        <script>
+            function verificarRestricciones() {
+                const nivel = document.getElementById("nivel_cuestionario").value.toLowerCase();
+
+                const complianceIds = [
+                    "compliance_onlycompany_politicas",
+                    "compliance_stakeholders",
+                    "compliance_stakeholders_politicas",
+                    "compliance_stakeholders_peps_y_sips",
+                    "compliance_stakeholders_politicas_peps_sips"
+                ];
+
+                // Habilitar/deshabilitar checkboxes según el nivel seleccionado
+                if (nivel === "basic" || nivel === "elementary") {
+                    complianceIds.forEach(id => {
+                        const checkbox = document.getElementById(id);
+                        checkbox.checked = false; // Desmarcar
+                        checkbox.disabled = true; // Deshabilitar
+                    });
+                } else {
+                    complianceIds.forEach(id => {
+                        const checkbox = document.getElementById(id);
+                        checkbox.disabled = false; // Habilitar
+                    });
+                }
+            }
+
+            function exclusivoCompliance(seleccionadoId) {
+                const ids = [
+                    "compliance_onlycompany",
+                    "compliance_onlycompany_politicas",
+                    "compliance_stakeholders",
+                    "compliance_stakeholders_politicas",
+                    "compliance_stakeholders_peps_y_sips",
+                    "compliance_stakeholders_politicas_peps_sips"
+                ];
+
+                ids.forEach(id => {
+                    if (id !== seleccionadoId) {
+                        document.getElementById(id).checked = false; // Desmarcar
+                    }
+                });
+            }
+
+                // Escuchar cambios en el selector de nivel
+                document.getElementById("nivel_cuestionario").addEventListener("change", verificarRestricciones);
+            </script>
+
+
+        <!-- Riesgo Newsclipping y Geopolítico (sin restricciones) -->
+        <fieldset>
+            <legend data-lang-es="Riesgo Newsclipping y Geopolítico" data-lang-en="Newsclipping and Geopolitical Risk">Riesgo Newsclipping y Geopolítico</legend>
+        
+            <label>
+                <input type="checkbox" id="newsclipping" name="servicios" value="Newsclipping" 
+                    data-lang-es="Newsclipping" 
+                    data-lang-en="Newsclipping">
+                <span data-lang-es="Newsclipping" data-lang-en="Newsclipping">Newsclipping</span>
+            </label><br>
+        
+            <label>
+                <input type="checkbox" id="geopolitico" name="servicios" value="Geopolitico" 
+                    data-lang-es="Geopolítico" 
+                    data-lang-en="Geopolitical">
+                <span data-lang-es="Geopolítico" data-lang-en="Geopolitical">Geopolítico</span>
+            </label><br>
+        </fieldset><br>
+        
+
+        <!-- Información General -->
+        <fieldset>
+            <legend data-lang-es="Información General Adicional" data-lang-en="Additional General Information">Información General Adicional</legend>
+        
+            <label>
+                <input type="checkbox" name="servicios" value="Centros" 
+                    data-lang-es="Centros" 
+                    data-lang-en="Centers">
+                <span data-lang-es="Centros" data-lang-en="Centers">Centros</span>
+            </label><br>
+        
+            <label>
+                <input type="checkbox" name="servicios" value="Personas de contacto para licitaciones" 
+                    data-lang-es="Personas de contacto para licitaciones" 
+                    data-lang-en="Contact persons for bids">
+                <span data-lang-es="Personas de contacto para licitaciones" data-lang-en="Contact persons for bids">Personas de contacto para licitaciones</span>
+            </label><br>
+        </fieldset><br>
+        
+
+        <!-- Sección Obligaciones Tributarias -->
+        <fieldset>
+            <legend data-lang-es="Sección Obligaciones Tributarias" data-lang-en="Tax Obligations Section">Sección Obligaciones Tributarias</legend>
+        
+            <label>
+                <input type="checkbox" id="obligaciones_documento" name="servicios" value="Obligaciones Tributarias con documento" 
+                    onclick="exclusivoObligaciones('obligaciones_documento')" 
+                    data-lang-es="Obligaciones Tributarias con documento" 
+                    data-lang-en="Tax Obligations with document">
+                <span data-lang-es="Obligaciones Tributarias con documento" data-lang-en="Tax Obligations with document">
+                    Obligaciones Tributarias con documento
+                </span>
+            </label><br>
+        
+            <label>
+                <input type="checkbox" id="obligaciones_sin_documento" name="servicios" value="Obligaciones Tributarias sin documento" 
+                    onclick="exclusivoObligaciones('obligaciones_sin_documento')" 
+                    data-lang-es="Obligaciones Tributarias sin documento" 
+                    data-lang-en="Tax Obligations without document">
+                <span data-lang-es="Obligaciones Tributarias sin documento" data-lang-en="Tax Obligations without document">
+                    Obligaciones Tributarias sin documento
+                </span>
+            </label><br>
+        </fieldset><br>
+        
+
+        <script>
+            // Función para restringir niveles incompatibles con "Obligaciones Tributarias con documento"
+            function verificarRestriccionesObligaciones() {
+                const nivel = document.getElementById("nivel_cuestionario").value.toLowerCase();
+                const obligacionesDocumentoCheckbox = document.getElementById("obligaciones_documento");
+
+                // Deshabilitar "Obligaciones Tributarias con documento" para niveles incompatibles
+                if (nivel === "basic" || nivel === "elementary" || nivel === "digital") {
+                    obligacionesDocumentoCheckbox.checked = false;
+                    obligacionesDocumentoCheckbox.disabled = true;
+
+                    // Mensaje dinámico según idioma seleccionado
+                    const idiomaSeleccionado = document.getElementById("language-selector").value;
+                    if (idiomaSeleccionado === "es") {
+                        alert("Obligaciones Tributarias con documento no está disponible para niveles Basic, Elementary o Digital.");
+                    } else if (idiomaSeleccionado === "en") {
+                        alert("Tax Obligations with document is not available for Basic, Elementary, or Digital levels.");
+                    }
+                } else {
+                    obligacionesDocumentoCheckbox.disabled = false; // Habilitar si es un nivel compatible
+                }
+            }
+
+            // Lógica de exclusión mutua para Obligaciones Tributarias
+            function exclusivoObligaciones(seleccionadoId) {
+                const ids = ["obligaciones_documento", "obligaciones_sin_documento"];
+
+                ids.forEach(id => {
+                    if (id !== seleccionadoId) {
+                        document.getElementById(id).checked = false;
+                    }
+                });
+            }
+
+            // Escuchar cambios en el selector de nivel
+            document.getElementById("nivel_cuestionario").addEventListener("change", verificarRestriccionesObligaciones);
+        </script>
+
+        <!-- Sección Observaciones (siempre seleccionada excepto en Digital) -->
+        <fieldset>
+            <legend data-lang-es="Sección Observaciones" data-lang-en="Observations Section">Sección Observaciones</legend>
+
+            <!-- Observaciones -->
+            <label>
+                <input type="checkbox" id="observaciones" value="Observaciones" checked disabled 
+                    data-lang-es="Observaciones" 
+                    data-lang-en="Observations">
+                <span data-lang-es="Observaciones" data-lang-en="Observations">Observaciones</span>
+            </label>
+            <input type="hidden" name="servicios" value="Observaciones" id="hidden_observaciones"><br>
+
+            <!-- Observaciones particulares cliente -->
+            <label>
+                <input type="checkbox" id="observaciones_particulares" value="Observaciones particulares cliente" checked disabled 
+                    data-lang-es="Observaciones particulares cliente" 
+                    data-lang-en="Client-specific observations">
+                <span data-lang-es="Observaciones particulares cliente" data-lang-en="Client-specific observations">
+                    Observaciones particulares cliente
+                </span>
+            </label>
+            <input type="hidden" name="servicios" value="Observaciones particulares cliente" id="hidden_observaciones_particulares"><br>
+        </fieldset><br>
+
+        <script>
+            // Función para verificar restricciones según nivel seleccionado
+            function verificarRestriccionesObservaciones() {
+                const nivel = document.getElementById("nivel_cuestionario").value.toLowerCase();
+                
+                // Referencias a campos ocultos de Observaciones
+                const hiddenObservaciones = document.getElementById("hidden_observaciones");
+                const hiddenObservacionesParticulares = document.getElementById("hidden_observaciones_particulares");
+
+                // Si el nivel es "digital", deshabilitar Observaciones
+                if (nivel === "digital") {
+                    hiddenObservaciones.disabled = true;
+                    hiddenObservacionesParticulares.disabled = true;
+                } else {
+                    hiddenObservaciones.disabled = false;
+                    hiddenObservacionesParticulares.disabled = false;
+                }
+            }
+
+            // Ejecutar la función al cambiar el nivel y al cargar la página
+            document.getElementById("nivel_cuestionario").addEventListener("change", verificarRestriccionesObservaciones);
+            window.addEventListener("DOMContentLoaded", verificarRestriccionesObservaciones);
+        </script>
+
+                
+            
+    <!-- Botones para resumen y envío -->
+    <div class="text-center mt-4">
+        <button type="button" class="btn btn-info me-3" onclick="mostrarResumen()" 
+            data-lang-es="Ver Resumen" 
+            data-lang-en="View Summary">
+            Ver Resumen
+        </button>
+        <button type="submit" class="btn btn-success" 
+            data-lang-es="Enviar" 
+            data-lang-en="Submit">
+            Enviar
+        </button>
+    </div>
+
+    <!-- Sección de Resumen -->
+    <div id="resumen" class="bg-light border rounded p-4 mt-4" style="display: none;">
+        <h2 class="text-center" data-lang-es="Resumen de Selección" data-lang-en="Selection Summary">Resumen de Selección</h2>
+        <p class="mt-3">
+            <strong data-lang-es="Nivel Seleccionado:" data-lang-en="Selected Level:">Nivel Seleccionado:</strong> 
+            <span id="nivelSeleccionado"></span>
+        </p>
+        <hr>
+        <p><strong data-lang-es="Servicios Seleccionados:" data-lang-en="Selected Services:">Servicios Seleccionados:</strong></p>
+        <ul id="detallesResumen" class="ps-3"></ul>
+    </div>
+
+        
+        <p><strong data-lang-es="Nombre del cliente:" data-lang-en="Client Name:">Nombre del cliente:</strong> 
+            <span id="nombreClienteResumen"></span>
+        </p>
+        <p><strong data-lang-es="Liderado por:" data-lang-en="Led by:">Liderado por:</strong> 
+            <span id="lideradoPorResumen"></span>
+        </p>
+        <p><strong data-lang-es="Fecha de generación:" data-lang-en="Generation Date:">Fecha de generación:</strong> 
+            <span id="fechaGeneracion"></span>
+        </p>
+        
+
+    </div>
+        <script>
+        function mostrarResumen() {
+            try {
+                // Obtener el nivel seleccionado
+                const nivelInput = document.getElementById("nivel_cuestionario");
+                if (!nivelInput) {
+                    console.error("Elemento 'nivel_cuestionario' no encontrado");
+                    return;
+                }
+                const nivel = nivelInput.value.toLowerCase();
+                document.getElementById("nivelSeleccionado").textContent = nivel;
+
+                // Obtener el nombre del cliente y líder
+                const nombreCliente = document.getElementById("nombre_cliente")?.value || "N/A";
+                const lideradoPor = document.getElementById("liderado_por")?.value || "N/A";
+
+                // Mostrar el nombre del cliente y líder en el resumen
+                const nombreClienteResumen = document.getElementById("nombreClienteResumen");
+                const lideradoPorResumen = document.getElementById("lideradoPorResumen");
+                if (nombreClienteResumen && lideradoPorResumen) {
+                    nombreClienteResumen.textContent = nombreCliente;
+                    lideradoPorResumen.textContent = lideradoPor;
+                }
+
+                // Agregar la fecha de generación del resumen
+                const fechaActual = new Date();
+                const fechaFormateada = `${fechaActual.getDate()}/${fechaActual.getMonth() + 1}/${fechaActual.getFullYear()} ${fechaActual.getHours()}:${fechaActual.getMinutes()}`;
+                const fechaGeneracion = document.getElementById("fechaGeneracion");
+                if (fechaGeneracion) {
+                    fechaGeneracion.textContent = fechaFormateada;
+                }
+
+                // Servicios fijos por nivel
+                const serviciosPorNivel = {
+                    "360": ["Datos Generales", "Datos de contacto", "Número de registro / Información fiscal", "Sector de actividad", "Centros", "Términos y Condiciones", "Configuración IT"],
+                    "180": ["Datos Generales", "Datos de contacto", "Número de registro / Información fiscal", "Sector de actividad", "Centros", "Términos y Condiciones", "Configuración IT"],
+                    "basic": ["Datos Generales", "Datos de contacto", "Número de registro / Información fiscal", "Sector de actividad", "Centros", "Términos y Condiciones", "Configuración IT"],
+                    "elementary": ["Datos Generales", "Datos de contacto", "Número de registro / Información fiscal", "Sector de actividad", "Centros", "Términos y Condiciones", "Configuración IT"],
+                    "digital": ["Datos Generales", "Número de registro / Información fiscal", "Sector de actividad", "Configuración IT"]
+                };
+
+                // Validar si el nivel es válido
+                if (!serviciosPorNivel[nivel]) {
+                    alert("Nivel no válido seleccionado.");
+                    return;
+                }
+
+                // Obtener los servicios seleccionados visibles (checkboxes seleccionados)
+                const seleccionadosVisibles = Array.from(document.querySelectorAll('input[name="servicios"]:checked'))
+                    .map(checkbox => checkbox.value);
+
+                // Obtener los servicios seleccionados ocultos (inputs hidden)
+                const seleccionadosOcultos = Array.from(document.querySelectorAll('input[type="hidden"][name="servicios"]'))
+                    .map(input => input.value);
+
+                // Combinar servicios visibles, ocultos, y los fijos según el nivel
+                const seleccionados = [...seleccionadosVisibles, ...seleccionadosOcultos, ...(serviciosPorNivel[nivel] || [])];
+
+                // Eliminar duplicados (por si algún servicio fijo ya está seleccionado)
+                const serviciosUnicos = [...new Set(seleccionados)];
+
+                // Referencia a la lista de servicios
+                const detallesResumen = document.getElementById("detallesResumen");
+                if (!detallesResumen) {
+                    console.error("Elemento 'detallesResumen' no encontrado");
+                    return;
+                }
+                detallesResumen.innerHTML = ""; // Limpiar lista previa
+
+                if (serviciosUnicos.length > 0) {
+                    // Crear una lista de servicios seleccionados
+                    serviciosUnicos.forEach(servicio => {
+                        const li = document.createElement("li");
+                        li.textContent = servicio;
+                        detallesResumen.appendChild(li);
+                    });
+                } else {
+                    const li = document.createElement("li");
+                    li.textContent = document.getElementById("language-selector")?.value === "es" 
+                        ? "No se ha seleccionado ningún servicio." 
+                        : "No service has been selected.";
+                    detallesResumen.appendChild(li);
+                }
+
+                // Mostrar el resumen
+                const resumenDiv = document.getElementById("resumen");
+                if (resumenDiv) {
+                    resumenDiv.style.display = "block";
+                }
+            } catch (error) {
+                console.error("Error al mostrar el resumen:", error);
+            }
+        }
+
+        function changeLanguage() {
+            try {
+                const selectedLanguage = document.getElementById("language-selector")?.value;
+
+                // Cambiar textos dinámicamente
+                document.querySelectorAll("[data-lang-es]").forEach(element => {
+                    element.textContent = element.getAttribute(`data-lang-${selectedLanguage}`);
+                });
+
+                // Cambiar texto del resumen si ya está visible
+                if (document.getElementById("resumen").style.display === "block") {
+                    mostrarResumen(); // Volver a mostrar el resumen con el idioma actualizado
+                }
+            } catch (error) {
+                console.error("Error al cambiar el idioma:", error);
+            }
+        }
+    </script>
+
+</form>
+
+</body>
+</html>
