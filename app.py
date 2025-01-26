@@ -40,8 +40,8 @@ def submit():
 
     # Crear un DataFrame con los datos adicionales
     metadata_df = pd.DataFrame({
-        'Concepto': ['Nombre del cliente', 'Liderado por', 'Fecha de generación'],
-        'Data': [nombre_cliente, liderado_por, fecha_generacion]
+        'Concepto': ['Nombre del cliente', 'Liderado por', 'Fecha de generación', 'Nivel del cuestionario'],
+        'Data': [nombre_cliente, liderado_por, fecha_generacion, nivel.capitalize()]
     })
 
     # Crear un buffer para generar el archivo Excel
@@ -57,3 +57,4 @@ def submit():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
