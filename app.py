@@ -14,6 +14,50 @@ SERVICIOS_FIJOS_POR_NIVEL = {
     "digital": ["Datos Generales", "Número de registro / Información fiscal", "Sector de actividad", "Configuración IT"]
 }
 
+# Mapeo de servicios con sus códigos
+MAPEO_SERVICIOS_CODIGOS = {
+    "Datos Generales": "F",
+    "Datos de contacto": "G",
+    "Número de registro / Información fiscal": "I",
+    "Sector de actividad": "J",
+    "Centros": "L",
+    "Términos y Condiciones": "M",
+    "Configuración IT": "N",
+    "Modelo Completo Enriquecido (Con Documento)": "A",
+    "Modelo Reducido Enriquecido (Con documento)": "C",
+    "Modelo Reducido No Enriquecido (Sin Documento)": "AZ",
+    "Modelo Mínimo No Enriquecido (Sin documento)": "E",
+    "Operacional con documento": "AM",
+    "Operacional sin documento": "AN",
+    "Accidentabilidad": "AO",
+    "Ciberseguridad Completo": "AP",
+    "Ciberseguridad Basico": "AQ",
+    "Newsclipping": "U",
+    "Geopolítico": "T",
+    "Observaciones": "AU",
+    "ESG Predictivo": "BA",
+    "Personas de contacto para licitaciones": "H",
+    "ESG Transversal": "AB",
+    "Obligaciones Tributarias con documento":"AR",
+    "Obligaciones Tributarias sin documento": "AS",
+    "ESG Intermedio": "AG",
+    "ESG Completo": "AC",
+    "ESG Basico":"AJ",
+    "Datos bancarios sin documento": "AW",
+    "Datos bancarios con documento": "R",
+    "Poliza de seguro con documento" : "Q",
+    "Poliza de seguro sin documento" : "AV",
+    "Onlycompany" : "T",
+    "Onlycompany + Políticas" : "U",
+    "Stakeholders": "V",
+    "Stakeholders + Politicas" : "W", 
+    "Stakeholders + Peps y Sips" : "X",
+    "Stakeholders + Politicas + Peps y Sips": "Y",
+
+ 
+    # Agrega el resto de servicios y códigos aquí
+}
+
 @app.route('/')
 def index():
     return render_template('formulario.html')
@@ -30,8 +74,11 @@ def submit():
     servicios_fijos = SERVICIOS_FIJOS_POR_NIVEL.get(nivel, [])
     servicios_finales = list(set(servicios_seleccionados + servicios_fijos))  # Eliminar duplicados
 
-    # Crear un DataFrame con los servicios finales
-    servicios_df = pd.DataFrame({'Check Name': servicios_finales})
+    # Crear un DataFrame con los servicios finales y sus códigos
+    servicios_df = pd.DataFrame({
+        'Check Name': servicios_finales,
+        'Codigo': [MAPEO_SERVICIOS_CODIGOS.get(servicio, "N/A") for servicio in servicios_finales]
+    })
 
     # Obtener datos del cliente
     nombre_cliente = request.form.get('nombre_cliente', 'N/A')
@@ -57,4 +104,3 @@ def submit():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
