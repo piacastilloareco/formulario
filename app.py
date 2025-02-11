@@ -32,7 +32,7 @@ MAPEO_SERVICIOS_CODIGOS = {
     "Accidentabilidad": "AO",
     "Ciberseguridad Completo": "AP",
     "Ciberseguridad Basico": "AQ",
-    "Newsclipping": "U",
+    "Newsclipping": "BA",
     "Geopolítico": "T",
     "Observaciones": "AU",
     "ESG Predictivo": "BA",
