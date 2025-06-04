@@ -48,7 +48,7 @@ MAPEO_SERVICIOS_CODIGOS = {
     "Poliza de seguro con documento" : "Q",
     "Poliza de seguro sin documento" : "AV",
     "Onlycompany" : "T",
-    "Onlycompany + Políticas" : "U",
+    "Onlycompany + Politicas": "U",
     "Stakeholders": "V",
     "Stakeholders + Politicas" : "W", 
     "Stakeholders + Peps y Sips" : "X",
