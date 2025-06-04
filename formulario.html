@@ -532,101 +532,111 @@ function changeLanguage() {
             </label><br>
 
             <!-- Checkbox ESG Transversal -->
+
             <label>
-                <input type="checkbox" id="esg_transversal" value="ESG Transversal" 
-                    data-lang-es="ESG Transversal" 
+                <input type="checkbox" id="esg_transversal" value="ESG Transversal"
+                    data-lang-es="ESG Transversal"
                     data-lang-en="ESG Transversal" disabled>
                 <span data-lang-es="ESG Transversal" data-lang-en="ESG Transversal">ESG Transversal</span>
             </label>
-            <input type="hidden" name="servicios" value="ESG Transversal" id="hidden_esg_transversal" disabled><br>
+            <input type="hidden" value="ESG Transversal" id="hidden_esg_transversal"><br>
 
             <!-- Checkbox ESG Predictivo -->
             <label>
-                <input type="checkbox" id="esg_predictivo" value="ESG Predictivo" 
-                    data-lang-es="ESG Predictivo" 
-                    data-lang-en="ESG Predictive" disabled>
+                <input type="checkbox" id="esg_predictivo" value="ESG Predictivo"
+                    data-lang-es="ESG Predictivo"
+                    data-lang-en="ESG Predictive">
                 <span data-lang-es="ESG Predictivo" data-lang-en="ESG Predictive">ESG Predictivo</span>
             </label>
-            <input type="hidden" name="servicios" value="ESG Predictivo" id="hidden_esg_predictivo" disabled><br>
+            <input type="hidden" value="ESG Predictivo" id="hidden_esg_predictivo"><br>
+
 
         </fieldset>
 
         <script>
             function verificarSeleccionESG() {
-                const esgCompleto = document.getElementById("esg_completo").checked;
-                const esgIntermedio = document.getElementById("esg_intermedio").checked;
-                const esgBasico = document.getElementById("esg_basico").checked;
-
-                // Referencias a ESG Transversal y Predictivo
+                const esgCompleto = document.getElementById("esg_completo")?.checked;
+                const esgIntermedio = document.getElementById("esg_intermedio")?.checked;
+                const esgBasico = document.getElementById("esg_basico")?.checked;
+                const nivel = document.getElementById("nivel_cuestionario")?.value?.toLowerCase();
+        
                 const esgTransversal = document.getElementById("esg_transversal");
                 const hiddenTransversal = document.getElementById("hidden_esg_transversal");
+        
                 const esgPredictivo = document.getElementById("esg_predictivo");
                 const hiddenPredictivo = document.getElementById("hidden_esg_predictivo");
-
-                // Activar ESG Transversal y Predictivo si alguno de los ESG está seleccionado
-                if (esgCompleto || esgIntermedio || esgBasico) {
-                    esgTransversal.disabled = false;
+        
+                const seleccionESG = esgCompleto || esgIntermedio || esgBasico;
+        
+                // ESG Transversal: siempre activo y no editable si seleccionaron algún ESG
+                if (seleccionESG) {
+                    esgTransversal.disabled = true;
                     esgTransversal.checked = true;
-                    hiddenTransversal.disabled = false;
-
-                    esgPredictivo.disabled = false;
-                    esgPredictivo.checked = true;
-                    hiddenPredictivo.disabled = false;
+                    hiddenTransversal.setAttribute("name", "servicios");
                 } else {
                     esgTransversal.disabled = true;
                     esgTransversal.checked = false;
-                    hiddenTransversal.disabled = true;
-
+                    hiddenTransversal.removeAttribute("name");
+                }
+        
+                // ESG Predictivo:
+                if (seleccionESG) {
                     esgPredictivo.disabled = true;
+                    esgPredictivo.checked = true;
+                    hiddenPredictivo.setAttribute("name", "servicios");
+                } else if (nivel === "digital") {
+                    esgPredictivo.disabled = false;
+                    esgPredictivo.checked = true;
+                    hiddenPredictivo.setAttribute("name", "servicios");
+                } else {
+                    esgPredictivo.disabled = false;
                     esgPredictivo.checked = false;
-                    hiddenPredictivo.disabled = true;
+                    hiddenPredictivo.removeAttribute("name");
                 }
             }
-
-            // Prevenir que ESG Transversal y Predictivo puedan ser desmarcados manualmente
-            document.getElementById("esg_transversal").addEventListener("click", function (e) {
-                e.preventDefault(); // Bloquea la acción de desmarcar
-            });
-
-            document.getElementById("esg_predictivo").addEventListener("click", function (e) {
-                e.preventDefault(); // Bloquea la acción de desmarcar
-            });
-
+        
             function verificarRestriccionesESG() {
-                const nivel = document.getElementById("nivel_cuestionario").value.toLowerCase();
-
-                // Referencias a los elementos ESG
+                const nivel = document.getElementById("nivel_cuestionario")?.value?.toLowerCase();
+        
                 const esgCompleto = document.getElementById("esg_completo");
                 const esgIntermedio = document.getElementById("esg_intermedio");
                 const esgBasico = document.getElementById("esg_basico");
-
-                // Restablecer: deshabilitar y desmarcar todos los checkboxes
+        
                 [esgCompleto, esgIntermedio, esgBasico].forEach(checkbox => {
                     checkbox.checked = false;
                     checkbox.disabled = true;
                 });
-
-                // Aplicar criterios según el nivel
+        
                 if (nivel === "360") {
-                    esgCompleto.disabled = false; // Habilitar ESG Completo
+                    esgCompleto.disabled = false;
                 } else if (nivel === "180") {
-                    esgIntermedio.disabled = false; // Habilitar ESG Intermedio
+                    esgIntermedio.disabled = false;
                 } else if (nivel === "basic") {
-                    esgBasico.disabled = false; // Habilitar ESG Básico
+                    esgBasico.disabled = false;
                 }
-
-                verificarSeleccionESG(); // Garantizar la lógica de Transversal y Predictivo
+        
+                verificarSeleccionESG();
             }
-
-            // Escuchar cambios en el selector de nivel
-            document.getElementById("nivel_cuestionario").addEventListener("change", verificarRestriccionesESG);
-
-            // Ejecutar al cargar la página
+        
+            // Prevenir que ESG Transversal pueda desmarcarse
+            document.getElementById("esg_transversal")?.addEventListener("click", function (e) {
+                e.preventDefault();
+            });
+        
+            // Actualizar hidden cuando ESG Predictivo cambia (solo si no está deshabilitado)
+            document.getElementById("esg_predictivo")?.addEventListener("change", function () {
+                const hiddenPredictivo = document.getElementById("hidden_esg_predictivo");
+                if (this.checked) {
+                    hiddenPredictivo.setAttribute("name", "servicios");
+                } else {
+                    hiddenPredictivo.removeAttribute("name");
+                }
+            });
+        
+            document.getElementById("nivel_cuestionario")?.addEventListener("change", verificarRestriccionesESG);
             window.addEventListener("DOMContentLoaded", verificarRestriccionesESG);
-
-
-
         </script>
+        
 
         <!-- Riesgo Ciberseguridad -->
             
@@ -821,29 +831,53 @@ function changeLanguage() {
 
         <!-- Información General -->
         <fieldset>
-            <legend data-lang-es="Información General Adicional" data-lang-en="Additional General Information">Información General Adicional</legend>
-        
+            <legend data-lang-es="Información General Adicional" data-lang-en="Additional General Information">
+                Información General Adicional
+            </legend>
 
-            <label 
-            data-lang-title-es="Recopila información detallada sobre los centros de producción de la compañía, incluyendo su nombre, los productos o equipos que fabrican, tamaño en m², ubicación, y datos de contacto como dirección, país, teléfono y correo electrónico."
-            data-lang-title-en="Collects detailed information about the company's production facilities, including their name, the products or equipment they manufacture, size in m², location, and contact details such as address, country, phone number, and email.">
-
-                <input type="checkbox" name="servicios" value="Centros" 
-                    data-lang-es="Centros" 
+            <label class="solo-avanzado"
+                data-lang-title-es="Recopila información detallada sobre los centros de producción de la compañía, incluyendo su nombre, los productos o equipos que fabrican, tamaño en m², ubicación, y datos de contacto como dirección, país, teléfono y correo electrónico."
+                data-lang-title-en="Collects detailed information about the company's production facilities, including their name, the products or equipment they manufacture, size in m², location, and contact details such as address, country, phone number, and email.">
+                <input type="checkbox" name="servicios" value="Centros"
+                    data-lang-es="Centros"
                     data-lang-en="Centers">
                 <span data-lang-es="Centros" data-lang-en="Centers">Centros</span>
             </label><br>
 
-            <label 
-            data-lang-title-es="Recopila información de contacto específica de la persona responsable de gestionar los procesos de licitaciones en la empresa, incluyendo nombre, apellidos, cargo, teléfono y correo electrónico."
-            data-lang-title-en="Collects specific contact information for the person responsible for managing the company's bidding processes, including their first name, last name, position, phone number, and email address.">
-                <input type="checkbox" name="servicios" value="Personas de contacto para licitaciones" 
-                    data-lang-es="Personas de contacto para licitaciones" 
+            <label class="solo-avanzado"
+                data-lang-title-es="Recopila información de contacto específica de la persona responsable de gestionar los procesos de licitaciones en la empresa, incluyendo nombre, apellidos, cargo, teléfono y correo electrónico."
+                data-lang-title-en="Collects specific contact information for the person responsible for managing the company's bidding processes, including their first name, last name, position, phone number, and email address.">
+                <input type="checkbox" name="servicios" value="Personas de contacto para licitaciones"
+                    data-lang-es="Personas de contacto para licitaciones"
                     data-lang-en="Contact persons for bids">
-                <span data-lang-es="Personas de contacto para licitaciones" data-lang-en="Contact persons for bids">Personas de contacto para licitaciones</span>
+                <span data-lang-es="Personas de contacto para licitaciones" data-lang-en="Contact persons for bids">
+                    Personas de contacto para licitaciones
+                </span>
             </label><br>
         </fieldset><br>
-        
+
+        <script>
+            function aplicarRestriccionesPorNivel() {
+                const nivel = document.getElementById("nivel_cuestionario")?.value?.toLowerCase();
+                const serviciosAvanzados = document.querySelectorAll(".solo-avanzado");
+
+                serviciosAvanzados.forEach(label => {
+                    const checkbox = label.querySelector("input[type='checkbox']");
+                    if (nivel === "elementary" || nivel === "digital") {
+                        checkbox.checked = false;
+                        label.style.display = "none";
+                    } else {
+                        label.style.display = "block";
+                    }
+                });
+            }
+
+            document.getElementById("nivel_cuestionario").addEventListener("change", aplicarRestriccionesPorNivel);
+
+            window.addEventListener("DOMContentLoaded", aplicarRestriccionesPorNivel);
+        </script>
+
+
 
         <!-- Sección Obligaciones Tributarias -->
         <fieldset>
@@ -1084,7 +1118,7 @@ function changeLanguage() {
                     "360": ["Datos Generales", "Datos de contacto", "Número de registro / Información fiscal", "Sector de actividad", "Centros", "Términos y Condiciones", "Configuración IT"],
                     "180": ["Datos Generales", "Datos de contacto", "Número de registro / Información fiscal", "Sector de actividad", "Centros", "Términos y Condiciones", "Configuración IT"],
                     "basic": ["Datos Generales", "Datos de contacto", "Número de registro / Información fiscal", "Sector de actividad", "Centros", "Términos y Condiciones", "Configuración IT"],
-                    "elementary": ["Datos Generales", "Datos de contacto", "Número de registro / Información fiscal", "Sector de actividad", "Centros", "Términos y Condiciones", "Configuración IT"],
+                    "elementary": ["Datos Generales", "Datos de contacto", "Número de registro / Información fiscal", "Sector de actividad", "Términos y Condiciones", "Configuración IT"],
                     "digital": ["Datos Generales", "Número de registro / Información fiscal", "Sector de actividad", "Configuración IT"]
                 };
 
