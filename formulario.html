@@ -772,20 +772,34 @@ function changeLanguage() {
                     "compliance_stakeholders_politicas_peps_sips"
                 ];
 
-                // Habilitar/deshabilitar checkboxes según el nivel seleccionado
+                const restriccionesDigital = {
+                    "compliance_onlycompany_politicas": true,
+                    "compliance_stakeholders": false,
+                    "compliance_stakeholders_politicas": true,
+                    "compliance_stakeholders_peps_y_sips": false,
+                    "compliance_stakeholders_politicas_peps_sips": true
+                };
+
                 if (nivel === "basic" || nivel === "elementary") {
                     complianceIds.forEach(id => {
                         const checkbox = document.getElementById(id);
-                        checkbox.checked = false; // Desmarcar
-                        checkbox.disabled = true; // Deshabilitar
+                        checkbox.checked = false;
+                        checkbox.disabled = true;
+                    });
+                } else if (nivel === "digital") {
+                    complianceIds.forEach(id => {
+                        const checkbox = document.getElementById(id);
+                        checkbox.checked = false;
+                        checkbox.disabled = restriccionesDigital[id]; // deshabilita según config
                     });
                 } else {
                     complianceIds.forEach(id => {
                         const checkbox = document.getElementById(id);
-                        checkbox.disabled = false; // Habilitar
+                        checkbox.disabled = false;
                     });
                 }
             }
+
 
             function exclusivoCompliance(seleccionadoId) {
                 const ids = [
